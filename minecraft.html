@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⛏️ Minecraft Clone - Build and Explore</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="game-header">
+            <h1>⛏️ Minecraft Clone</h1>
+            <p>Build and explore!</p>
+        </div>
+        
+        <div id="gameContainer" style="width: 100%; height: 600px; position: relative;">
+            <!-- Three.js will render here -->
+        </div>
+        
+        <!-- Start Screen -->
+        <div id="startScreen" class="screen">
+            <h2>⛏️ Minecraft Clone</h2>
+            <p>Build and explore a blocky world!</p>
+            <p style="font-size: 0.9em; color: #666;">Controls: WASD to move, Mouse to look, Space to jump, Left Click to break, Right Click to place, E for inventory, C for crafting</p>
+            <button id="startBtn" class="btn">Start Game</button>
+        </div>
+        
+        <!-- Game Over Screen -->
+        <div id="gameOverScreen" class="screen hidden">
+            <h2>💀 Game Over</h2>
+            <div class="final-stats">
+                <p>Blocks Placed: <span id="finalPlaced">0</span></p>
+                <p>Blocks Broken: <span id="finalBroken">0</span></p>
+                <p>Time Survived: <span id="finalTime">0</span> minutes</p>
+            </div>
+            <button id="restartBtn" class="btn">Play Again</button>
+            <a href="index.html" class="btn" style="display: inline-block; margin-top: 10px;">Back to Menu</a>
+        </div>
+        
+        <!-- Inventory Screen -->
+        <div id="inventoryScreen" class="screen hidden">
+            <h2>Inventory</h2>
+            <div id="inventoryGrid"></div>
+            <button id="closeInventoryBtn" class="btn">Close (E)</button>
+        </div>
+        
+        <!-- Crafting Screen -->
+        <div id="craftingScreen" class="screen hidden">
+            <h2>Crafting</h2>
+            <div id="craftingRecipes"></div>
+            <button id="closeCraftingBtn" class="btn">Close (C)</button>
+        </div>
+        
+        <!-- Game UI -->
+        <div class="stats-bar">
+            <div class="stat">
+                <span class="stat-label">Health</span>
+                <span id="health">20/20</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Hunger</span>
+                <span id="hunger">20/20</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Time</span>
+                <span id="time">00:00</span>
+            </div>
+            <div class="stat">
+                <span id="blockInfo" style="font-size: 0.9em;">Air</span>
+            </div>
+        </div>
+        
+        <!-- Hotbar -->
+        <div id="hotbar" style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; gap: 5px; z-index: 10;"></div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="minecraft.js"></script>
+</body>
+</html>
+
+
+
+

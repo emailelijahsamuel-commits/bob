@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚔️ Hades - Action Roguelike</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="game-header">
+            <h1>⚔️ Hades</h1>
+            <p>Escape the Underworld!</p>
+        </div>
+        
+        <div class="game-wrapper">
+            <canvas id="gameCanvas"></canvas>
+        </div>
+        
+        <!-- Start Screen -->
+        <div id="startScreen" class="screen">
+            <h2>⚔️ Hades</h2>
+            <p>Escape the Underworld!</p>
+            <button id="startBtn" class="btn">Start Run</button>
+        </div>
+        
+        <!-- Weapon Selection Screen -->
+        <div id="weaponScreen" class="screen hidden">
+            <h2>Choose Your Weapon</h2>
+            <div id="weaponOptions"></div>
+        </div>
+        
+        <!-- Boon Selection Screen -->
+        <div id="boonScreen" class="screen hidden">
+            <h2>Choose a Boon</h2>
+            <div id="boonOptions"></div>
+            <button id="skipBoonBtn" class="btn">Skip</button>
+        </div>
+        
+        <!-- Shop Screen -->
+        <div id="shopScreen" class="screen hidden">
+            <h2>Charon's Shop</h2>
+            <div id="shopItems"></div>
+            <button id="leaveShopBtn" class="btn">Leave Shop</button>
+        </div>
+        
+        <!-- Game Over Screen -->
+        <div id="gameOverScreen" class="screen hidden">
+            <h2>💀 Defeated</h2>
+            <div class="final-stats">
+                <p>Rooms Cleared: <span id="finalRooms">0</span></p>
+                <p>Enemies Defeated: <span id="finalEnemies">0</span></p>
+                <p>Darkness Collected: <span id="finalDarkness">0</span></p>
+            </div>
+            <button id="restartBtn" class="btn">Try Again</button>
+            <a href="index.html" class="btn" style="display: inline-block; margin-top: 10px;">Back to Menu</a>
+        </div>
+        
+        <!-- Victory Screen -->
+        <div id="victoryScreen" class="screen hidden">
+            <h2>🏆 Victory!</h2>
+            <p>You escaped the Underworld!</p>
+            <button id="newRunBtn" class="btn">New Run</button>
+            <a href="index.html" class="btn" style="display: inline-block; margin-top: 10px;">Back to Menu</a>
+        </div>
+        
+        <!-- Game UI -->
+        <div class="stats-bar">
+            <div class="stat">
+                <span class="stat-label">Room</span>
+                <span id="roomNumber">1</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">HP</span>
+                <span id="playerHp">100/100</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Darkness</span>
+                <span id="darkness">0</span>
+            </div>
+        </div>
+    </div>
+    
+    <script src="hades.js"></script>
+</body>
+</html>
+
+
+
+

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🗡️ Slay the Spire - Deck Building Roguelike</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="game-header">
+            <h1>🗡️ Slay the Spire</h1>
+            <p>Build your deck and climb the spire!</p>
+        </div>
+        
+        <!-- Start Screen -->
+        <div id="startScreen" class="screen">
+            <h2>🗡️ Slay the Spire</h2>
+            <p>Build your deck and climb the spire!</p>
+            <button id="startBtn" class="btn">Start Run</button>
+        </div>
+        
+        <!-- Map Screen -->
+        <div id="mapScreen" class="screen hidden">
+            <h2>Choose Your Path</h2>
+            <div id="mapContainer"></div>
+            <div style="margin-top: 20px;">
+                <p>Floor: <span id="mapFloor">1</span></p>
+                <p>Rooms Remaining: <span id="roomsRemaining">0</span></p>
+            </div>
+        </div>
+        
+        <!-- Combat Screen -->
+        <div id="combatScreen" class="screen hidden">
+            <h2>Combat</h2>
+            <div style="text-align: left; margin: 20px 0;">
+                <p><strong id="enemyName">Enemy</strong></p>
+                <p>HP: <span id="enemyHp">0/0</span></p>
+                <p>Intent: <span id="enemyIntent">Attacking</span></p>
+            </div>
+            <div id="hand"></div>
+            <div style="margin-top: 20px;">
+                <p>Your HP: <span id="playerHp">80/80</span></p>
+                <p>Block: <span id="playerBlock">0</span></p>
+                <p>Energy: <span id="energy">3/3</span></p>
+            </div>
+            <button id="endTurnBtn" class="btn">End Turn</button>
+        </div>
+        
+        <!-- Card Rewards Screen -->
+        <div id="cardRewardScreen" class="screen hidden">
+            <h2>Choose a Card</h2>
+            <div id="cardRewards"></div>
+            <button id="skipCardBtn" class="btn">Skip</button>
+        </div>
+        
+        <!-- Shop Screen -->
+        <div id="shopScreen" class="screen hidden">
+            <h2>Shop</h2>
+            <p>Gold: <span id="shopGold">0</span></p>
+            <h3>Cards</h3>
+            <div id="shopCards"></div>
+            <h3>Relics</h3>
+            <div id="shopRelics"></div>
+            <button id="leaveShopBtn" class="btn">Leave Shop</button>
+        </div>
+        
+        <!-- Rest Screen -->
+        <div id="restScreen" class="screen hidden">
+            <h2>Rest Site</h2>
+            <button id="restBtn" class="btn">Rest (Heal 30 HP)</button>
+            <button id="upgradeCardBtn" class="btn">Upgrade a Card</button>
+            <button id="leaveRestBtn" class="btn">Continue</button>
+        </div>
+        
+        <!-- Deck View Screen -->
+        <div id="deckScreen" class="screen hidden">
+            <h2>Your Deck</h2>
+            <div id="deckList"></div>
+            <button id="closeDeckBtn" class="btn">Close</button>
+        </div>
+        
+        <!-- Game Over Screen -->
+        <div id="gameOverScreen" class="screen hidden">
+            <h2>💀 Defeated</h2>
+            <p>You were defeated on floor <span id="finalFloor">1</span></p>
+            <button id="restartBtn" class="btn">Try Again</button>
+            <a href="index.html" class="btn" style="display: inline-block; margin-top: 10px;">Back to Menu</a>
+        </div>
+        
+        <!-- Game UI Overlay -->
+        <div class="stats-bar">
+            <div class="stat">
+                <span class="stat-label">HP</span>
+                <span id="hp">80/80</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Gold</span>
+                <span id="gold">99</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Floor</span>
+                <span id="floor">1</span>
+            </div>
+            <button id="deckBtn" class="btn" style="padding: 8px 15px; font-size: 0.9em;">Deck</button>
+            <button id="relicsBtn" class="btn" style="padding: 8px 15px; font-size: 0.9em;">Relics</button>
+        </div>
+    </div>
+    
+    <script src="slaythespire.js"></script>
+</body>
+</html>
+

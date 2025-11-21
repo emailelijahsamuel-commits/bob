@@ -1,0 +1,57 @@
+═══════════════════════════════════════════════════════════
+  ✅ DRAG YOUR FOLDER NOW!
+═══════════════════════════════════════════════════════════
+
+You see: "Drag and drop your project folder here."
+
+STEP 1: Open File Explorer
+───────────────────────────────────────────────────────────
+1. Press Windows key + E (opens File Explorer)
+2. OR click the folder icon in your taskbar
+
+───────────────────────────────────────────────────────────
+
+STEP 2: Navigate to Your Game Folder
+───────────────────────────────────────────────────────────
+1. In File Explorer, go to:
+   C:\Users\KinxGamer\OneDrive\workspace\game1
+
+2. You should see files like:
+   - index.html
+   - style.css
+   - script.js
+   - games/ folder
+   - etc.
+
+───────────────────────────────────────────────────────────
+
+STEP 3: Drag the ENTIRE Folder
+───────────────────────────────────────────────────────────
+1. Click on the "game1" folder
+2. Drag it (hold left mouse button)
+3. Drop it onto the Netlify box that says:
+   "Drag and drop your project folder here."
+4. Release the mouse button
+
+───────────────────────────────────────────────────────────
+
+STEP 4: Wait for Upload
+───────────────────────────────────────────────────────────
+1. You'll see a progress bar
+2. Wait for it to finish (may take 1-2 minutes)
+3. Netlify will automatically deploy your site!
+
+───────────────────────────────────────────────────────────
+
+AFTER DEPLOYMENT:
+───────────────────────────────────────────────────────────
+Your game will be live at:
+https://hades-game.netlify.app
+
+(Or a similar URL - Netlify will show you the exact URL)
+
+═══════════════════════════════════════════════════════════
+
+
+
+

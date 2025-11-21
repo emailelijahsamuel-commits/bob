@@ -1,0 +1,38 @@
+═══════════════════════════════════════════════════════════
+  ✅ CLICK "DEPLOY MANUALLY"
+═══════════════════════════════════════════════════════════
+
+You see: "...or deploy manually"
+
+STEP 1: Click "Deploy manually"
+───────────────────────────────────────────────────────────
+1. Look for the text "...or deploy manually"
+2. Click on it (it should be a clickable link/button)
+3. This will open the drag-and-drop area
+
+───────────────────────────────────────────────────────────
+
+STEP 2: Drag Your Folder
+───────────────────────────────────────────────────────────
+1. After clicking "deploy manually", you'll see a big box
+2. Open File Explorer (Windows key + E)
+3. Go to: C:\Users\KinxGamer\OneDrive\workspace\game1
+4. Drag the ENTIRE "game1" folder onto the box
+5. Wait for upload
+
+───────────────────────────────────────────────────────────
+
+IF YOU SEE A 404 ERROR:
+───────────────────────────────────────────────────────────
+1. Go back to: https://app.netlify.com/teams/emailelijahsamuel/projects
+2. Click "Add new site" (top right)
+3. Click "Deploy manually"
+4. Then drag your folder
+
+═══════════════════════════════════════════════════════════
+
+
+
+
+
+
