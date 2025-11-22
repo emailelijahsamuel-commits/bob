@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe - Two Player</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .game-container {
+            text-align: center;
+            padding: 20px;
+        }
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 150px);
+            grid-template-rows: repeat(3, 150px);
+            gap: 5px;
+            margin: 30px auto;
+            width: 460px;
+            background: #333;
+            padding: 5px;
+            border-radius: 10px;
+        }
+        .cell {
+            background: #fff;
+            border: none;
+            font-size: 60px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.2s;
+        }
+        .cell:hover {
+            background: #f0f0f0;
+            transform: scale(1.05);
+        }
+        .cell:disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        .status {
+            font-size: 2em;
+            color: #fff;
+            margin: 20px;
+            font-weight: bold;
+        }
+        .reset-btn {
+            padding: 15px 30px;
+            font-size: 1.2em;
+            background: #fff;
+            color: #667eea;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 20px;
+            font-weight: bold;
+        }
+        .reset-btn:hover {
+            background: #f0f0f0;
+            transform: scale(1.05);
+        }
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.2);
+            color: #fff;
+            border: 2px solid #fff;
+            border-radius: 10px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 1em;
+        }
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-btn">← Back to Menu</a>
+    <div class="game-container">
+        <div class="status" id="status">Player X's Turn</div>
+        <div class="board" id="board"></div>
+        <button class="reset-btn" onclick="resetGame()">Reset Game</button>
+    </div>
+    <script src="tictactoe.js"></script>
+</body>
+</html>
+
+

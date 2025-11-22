@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Racing - Two Player</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        }
+        #gameCanvas {
+            border: 3px solid #fff;
+            background: #2d5016;
+            display: block;
+            margin: 20px auto;
+            box-shadow: 0 0 30px rgba(255,255,255,0.3);
+        }
+        .controls {
+            text-align: center;
+            color: #fff;
+            margin: 20px;
+            font-size: 1.1em;
+        }
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.2);
+            color: #fff;
+            border: 2px solid #fff;
+            border-radius: 10px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 1em;
+        }
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-btn">← Back to Menu</a>
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+    <div class="controls">
+        <div>Player 1 (Red): A/D to turn | Player 2 (Blue): ←/→ to turn</div>
+        <div style="margin-top: 10px; font-size: 0.9em;">First to complete 3 laps wins!</div>
+    </div>
+    <script src="racing.js"></script>
+</body>
+</html>
+
+

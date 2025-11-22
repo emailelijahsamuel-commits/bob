@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Battle Arena - Two Player</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+        }
+        #gameCanvas {
+            border: 3px solid #fff;
+            background: #1a1a2e;
+            display: block;
+            margin: 20px auto;
+            box-shadow: 0 0 30px rgba(255,255,255,0.3);
+        }
+        .controls {
+            text-align: center;
+            color: #fff;
+            margin: 20px;
+            font-size: 1.1em;
+        }
+        .score {
+            text-align: center;
+            color: #fff;
+            font-size: 1.5em;
+            margin: 20px;
+        }
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.2);
+            color: #fff;
+            border: 2px solid #fff;
+            border-radius: 10px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 1em;
+        }
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-btn">← Back to Menu</a>
+    <div class="score">
+        <div>Player 1 (Red): <span id="health1">100</span> HP | Player 2 (Blue): <span id="health2">100</span> HP</div>
+    </div>
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+    <div class="controls">
+        <div>Player 1: WASD to move, Space to shoot | Player 2: Arrow keys to move, Enter to shoot</div>
+    </div>
+    <script src="battlearena.js"></script>
+</body>
+</html>
+
+

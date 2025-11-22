@@ -5,6 +5,7 @@ A collection of browser-based games including:
 - ⛏️ Minecraft Clone
 - 🗡️ Slay the Spire Clone
 - ⚔️ Hades Clone
+- 💀 The Binding of Isaac
 - 🐱 Cat Simulator
 - 🐅 Tiger RPG
 - 🏎️ Mario Kart
@@ -49,6 +50,7 @@ Just open `index.html` in your browser - no server needed!
 - **Minecraft Clone** - Voxel-based building game
 - **Slay the Spire** - Deck-building roguelike
 - **Hades** - Action roguelike with boons
+- **The Binding of Isaac** - Top-down roguelike shooter
 - **Cat Simulator** - 3D cat care simulator
 - **Tiger RPG** - 3D RPG adventure
 - **Mario Kart** - Racing game

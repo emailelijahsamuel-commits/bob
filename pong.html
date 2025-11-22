@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pong - Two Player</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        }
+        #gameCanvas {
+            border: 3px solid #fff;
+            background: #000;
+            display: block;
+            margin: 20px auto;
+            box-shadow: 0 0 30px rgba(255,255,255,0.3);
+        }
+        .controls {
+            text-align: center;
+            color: #fff;
+            margin: 20px;
+            font-size: 1.2em;
+        }
+        .score {
+            text-align: center;
+            color: #fff;
+            font-size: 2em;
+            margin: 20px;
+            font-weight: bold;
+        }
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.2);
+            color: #fff;
+            border: 2px solid #fff;
+            border-radius: 10px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 1em;
+        }
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-btn">← Back to Menu</a>
+    <div class="score">
+        <span id="player1Score">0</span> - <span id="player2Score">0</span>
+    </div>
+    <canvas id="gameCanvas" width="800" height="400"></canvas>
+    <div class="controls">
+        <div>Player 1: W (Up) / S (Down)</div>
+        <div>Player 2: ↑ (Up) / ↓ (Down)</div>
+        <div style="margin-top: 10px; font-size: 0.9em;">First to 5 wins!</div>
+    </div>
+    <script src="pong.js"></script>
+</body>
+</html>
+
+

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connect 4 - Two Player</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        }
+        .game-container {
+            text-align: center;
+            padding: 20px;
+        }
+        .board {
+            display: grid;
+            grid-template-columns: repeat(7, 70px);
+            grid-template-rows: repeat(6, 70px);
+            gap: 5px;
+            margin: 30px auto;
+            width: 500px;
+            background: #0066ff;
+            padding: 5px;
+            border-radius: 10px;
+        }
+        .cell {
+            background: #fff;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .cell:hover {
+            background: #e0e0e0;
+        }
+        .cell.red {
+            background: #ff0000;
+        }
+        .cell.yellow {
+            background: #ffff00;
+        }
+        .status {
+            font-size: 2em;
+            color: #fff;
+            margin: 20px;
+            font-weight: bold;
+        }
+        .reset-btn {
+            padding: 15px 30px;
+            font-size: 1.2em;
+            background: #fff;
+            color: #1e3c72;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 20px;
+            font-weight: bold;
+        }
+        .reset-btn:hover {
+            background: #f0f0f0;
+            transform: scale(1.05);
+        }
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.2);
+            color: #fff;
+            border: 2px solid #fff;
+            border-radius: 10px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 1em;
+        }
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-btn">← Back to Menu</a>
+    <div class="game-container">
+        <div class="status" id="status">Player Red's Turn</div>
+        <div class="board" id="board"></div>
+        <button class="reset-btn" onclick="resetGame()">Reset Game</button>
+    </div>
+    <script src="connect4.js"></script>
+</body>
+</html>
+
+
