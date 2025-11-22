@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gold</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        #gameCanvas { border: 3px solid #fff; background: #000; display: block; margin: 20px auto; }
+        .back-btn { position: absolute; top: 20px; left: 20px; padding: 10px 20px; background: rgba(255,255,255,0.2); color: #fff; border: 2px solid #fff; border-radius: 10px; cursor: pointer; text-decoration: none; }
+        .info { text-align: center; color: #fff; margin: 20px; }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-btn">← Back</a>
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+    <div class="info">
+        <h2>🥇 Gold</h2>
+        <p>Collect gold</p>
+        <p>Score: <span id="score">0</span></p>
+    </div>
+    <script src="game79.js"></script>
+</body>
+</html>
