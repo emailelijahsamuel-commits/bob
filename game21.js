@@ -1,5 +1,9 @@
 // Solitaire (Klondike)
 const canvas = document.getElementById('gameCanvas');
+if (!canvas) {
+    console.error('Canvas not found!');
+    alert('Error: Game canvas not found. Please refresh the page.');
+}
 const ctx = canvas.getContext('2d');
 
 const suits = ['♠', '♥', '♦', '♣'];
