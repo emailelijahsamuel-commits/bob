@@ -23,7 +23,13 @@
     <script>
         // Get game number from URL
         const urlParams = new URLSearchParams(window.location.search);
-        const gameNum = parseInt(urlParams.get('n')) || 104;
+        let gameNum = urlParams.get('n');
+        if (gameNum) {
+            // Handle very large numbers as strings
+            gameNum = gameNum.length > 15 ? gameNum : parseInt(gameNum) || 104;
+        } else {
+            gameNum = 104;
+        }
         
         const templates = [
             {name: "Click", icon: "🎯", desc: "Click the targets"},
@@ -38,8 +44,14 @@
             {name: "Attack", icon: "⚔️", desc: "Attack enemies"},
         ];
         
-        const template = templates[gameNum % templates.length];
-        document.getElementById('gameTitle').textContent = `${template.icon} ${template.name} Game #${gameNum}`;
+        // Convert gameNum to number for calculations, but keep as string for display
+        const gameNumStr = String(gameNum);
+        const gameNumForCalc = typeof gameNum === 'string' && gameNum.length > 15 
+            ? parseInt(gameNum.slice(-10)) || 104  // Use last 10 digits for calculation
+            : (typeof gameNum === 'number' ? gameNum : parseInt(gameNum) || 104);
+        
+        const template = templates[gameNumForCalc % templates.length];
+        document.getElementById('gameTitle').textContent = `${template.icon} ${template.name} Game #${gameNumStr}`;
         document.getElementById('gameDesc').textContent = template.desc;
         
         // Game code
@@ -48,7 +60,7 @@
         let score = 0;
         const targets = [];
         let gameStarted = false;
-        const gameType = gameNum % 10;
+        const gameType = gameNumForCalc % 10;
 
         function createTarget() {
             targets.push({

@@ -629,13 +629,14 @@
             
                 <!-- Dynamic Games Section - 1,000,000 games available -->
                 <div id="dynamicGames" style="grid-column: 1 / -1;">
-                    <h2 style="color: #667eea; text-align: center; margin: 20px;">🎮 1,000,000+ More Games</h2>
+                    <h2 style="color: #667eea; text-align: center; margin: 20px;">🎮 INFINITE GAMES!</h2>
                     <p style="text-align: center; color: #666; margin-bottom: 20px;">
-                        Games are loaded dynamically. Enter a game number (104-1000103) to play!
+                        Games are loaded dynamically. Enter ANY game number (104 or higher) to play!
                     </p>
                     <div style="text-align: center; margin: 20px;">
-                        <input type="number" id="gameNumber" placeholder="Enter game number (104-1000103)" 
-                               style="padding: 10px; font-size: 16px; width: 300px; border-radius: 5px; border: 2px solid #667eea;">
+                        <input type="text" id="gameNumber" placeholder="Enter any game number (e.g. 9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999)" 
+                               style="padding: 10px; font-size: 16px; width: 90%; max-width: 800px; border-radius: 5px; border: 2px solid #667eea;">
+                        <br><br>
                         <button onclick="loadGame()" 
                                 style="padding: 10px 20px; font-size: 16px; background: #667eea; color: white; border: none; border-radius: 5px; cursor: pointer; margin-left: 10px;">
                             Play Game
@@ -649,10 +650,10 @@
                 <script>
                 function loadGame() {
                     const num = document.getElementById('gameNumber').value;
-                    if (num >= 104 && num <= 1000103) {
+                    if (num && (parseInt(num) >= 104 || num.length > 0)) {
                         window.location.href = `game_dynamic.html?n=${num}`;
                     } else {
-                        alert('Please enter a number between 104 and 1000103');
+                        alert('Please enter a game number (104 or higher)');
                     }
                 }
                 
@@ -679,19 +680,26 @@
                         {name: "Attack", icon: "⚔️"},
                     ];
                     
-                    for (let i = 0; i < 20; i++) {
-                        const gameNum = 104 + i * 50000;
+                    // Show some example games with huge numbers
+                    const exampleGames = [
+                        104, 1000, 10000, 100000, 1000000, 10000000, 100000000,
+                        '9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999',
+                        '123456789012345678901234567890123456789012345678901234567890',
+                        '999888777666555444333222111000999888777666555444333222111000'
+                    ];
+                    
+                    exampleGames.forEach((gameNum, i) => {
                         const template = templates[i % templates.length];
                         const card = document.createElement('a');
                         card.href = `game_dynamic.html?n=${gameNum}`;
                         card.className = 'game-card';
                         card.innerHTML = `
                             <div class="game-icon">${template.icon}</div>
-                            <h3>${template.name} Game ${gameNum}</h3>
-                            <p>Game #${gameNum}</p>
+                            <h3>${template.name} Game</h3>
+                            <p>Game #${String(gameNum).length > 20 ? String(gameNum).substring(0, 20) + '...' : gameNum}</p>
                         `;
                         preview.appendChild(card);
-                    }
+                    });
                 }
                 showPreview();
                 </script>
