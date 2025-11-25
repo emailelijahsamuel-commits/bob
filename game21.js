@@ -16,14 +16,10 @@ let stock = [];
 let selectedCard = null;
 let score = 0;
 
-function createDeck() {
-    deck = [];
-    for (let suit of suits) {
-        for (let rank of ranks) {
-            deck.push({ suit, rank, value: getValue(rank), faceUp: false });
-        }
-    }
-    shuffle(deck);
+function getValue(rank) {
+    if (rank === 'A') return 1;
+    if (['J', 'Q', 'K'].includes(rank)) return 11 + ['J', 'Q', 'K'].indexOf(rank);
+    return parseInt(rank);
 }
 
 function shuffle(array) {
@@ -33,10 +29,14 @@ function shuffle(array) {
     }
 }
 
-function getValue(rank) {
-    if (rank === 'A') return 1;
-    if (['J', 'Q', 'K'].includes(rank)) return 11 + ['J', 'Q', 'K'].indexOf(rank);
-    return parseInt(rank);
+function createDeck() {
+    deck = [];
+    for (let suit of suits) {
+        for (let rank of ranks) {
+            deck.push({ suit, rank, value: getValue(rank), faceUp: false });
+        }
+    }
+    shuffle(deck);
 }
 
 function deal() {
@@ -204,5 +204,13 @@ function gameLoop() {
     requestAnimationFrame(gameLoop);
 }
 
-deal();
-gameLoop();
+// Wait for DOM to be ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        deal();
+        gameLoop();
+    });
+} else {
+    deal();
+    gameLoop();
+}

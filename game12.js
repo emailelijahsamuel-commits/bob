@@ -27,56 +27,52 @@ function init() {
 
 function checkMatches() {
     let found = false;
+    const toRemove = [];
+    
     // Check rows
     for (let i = 0; i < gridSize; i++) {
         let count = 1;
-        for (let j = 1; j < gridSize; j++) {
-            if (grid[i][j] === grid[i][j-1]) {
+        let start = 0;
+        for (let j = 1; j <= gridSize; j++) {
+            if (j < gridSize && grid[i][j] === grid[i][j-1] && grid[i][j] !== -1) {
                 count++;
             } else {
                 if (count >= 3) {
-                    for (let k = j - count; k < j; k++) {
-                        grid[i][k] = -1;
+                    for (let k = start; k < start + count; k++) {
+                        toRemove.push({i, j: k});
                     }
-                    score += count * 10;
-                    found = true;
                 }
                 count = 1;
+                start = j;
             }
-        }
-        if (count >= 3) {
-            for (let k = gridSize - count; k < gridSize; k++) {
-                grid[i][k] = -1;
-            }
-            score += count * 10;
-            found = true;
         }
     }
     
     // Check columns
     for (let j = 0; j < gridSize; j++) {
         let count = 1;
-        for (let i = 1; i < gridSize; i++) {
-            if (grid[i][j] === grid[i-1][j]) {
+        let start = 0;
+        for (let i = 1; i <= gridSize; i++) {
+            if (i < gridSize && grid[i][j] === grid[i-1][j] && grid[i][j] !== -1) {
                 count++;
             } else {
                 if (count >= 3) {
-                    for (let k = i - count; k < i; k++) {
-                        grid[k][j] = -1;
+                    for (let k = start; k < start + count; k++) {
+                        toRemove.push({i: k, j});
                     }
-                    score += count * 10;
-                    found = true;
                 }
                 count = 1;
+                start = i;
             }
         }
-        if (count >= 3) {
-            for (let k = gridSize - count; k < gridSize; k++) {
-                grid[k][j] = -1;
-            }
-            score += count * 10;
-            found = true;
-        }
+    }
+    
+    if (toRemove.length > 0) {
+        toRemove.forEach(({i, j}) => {
+            grid[i][j] = -1;
+            score += 10;
+        });
+        found = true;
     }
     
     if (found) {
@@ -149,5 +145,13 @@ function gameLoop() {
     requestAnimationFrame(gameLoop);
 }
 
-init();
-gameLoop();
+// Wait for DOM to be ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        init();
+        gameLoop();
+    });
+} else {
+    init();
+    gameLoop();
+}
