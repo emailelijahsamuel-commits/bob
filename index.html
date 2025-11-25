@@ -626,7 +626,76 @@
                     <h3>Rainbow</h3>
                     <p>Follow the rainbow</p>
                 </a>
-            </div>
+            
+                <!-- Dynamic Games Section - 1,000,000 games available -->
+                <div id="dynamicGames" style="grid-column: 1 / -1;">
+                    <h2 style="color: #667eea; text-align: center; margin: 20px;">🎮 1,000,000+ More Games</h2>
+                    <p style="text-align: center; color: #666; margin-bottom: 20px;">
+                        Games are loaded dynamically. Enter a game number (104-1000103) to play!
+                    </p>
+                    <div style="text-align: center; margin: 20px;">
+                        <input type="number" id="gameNumber" placeholder="Enter game number (104-1000103)" 
+                               style="padding: 10px; font-size: 16px; width: 300px; border-radius: 5px; border: 2px solid #667eea;">
+                        <button onclick="loadGame()" 
+                                style="padding: 10px 20px; font-size: 16px; background: #667eea; color: white; border: none; border-radius: 5px; cursor: pointer; margin-left: 10px;">
+                            Play Game
+                        </button>
+                    </div>
+                    <div id="gamePreview" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; margin-top: 20px;">
+                        <!-- Preview games will be loaded here -->
+                    </div>
+                </div>
+                
+                <script>
+                function loadGame() {
+                    const num = document.getElementById('gameNumber').value;
+                    if (num >= 104 && num <= 1000103) {
+                        window.location.href = `game_dynamic.html?n=${num}`;
+                    } else {
+                        alert('Please enter a number between 104 and 1000103');
+                    }
+                }
+                
+                // Allow Enter key to load game
+                document.getElementById('gameNumber').addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        loadGame();
+                    }
+                });
+                
+                // Show preview of some games
+                function showPreview() {
+                    const preview = document.getElementById('gamePreview');
+                    const templates = [
+                        {name: "Click", icon: "🎯"},
+                        {name: "Shoot", icon: "🔫"},
+                        {name: "Collect", icon: "💰"},
+                        {name: "Avoid", icon: "⚠️"},
+                        {name: "Match", icon: "🔗"},
+                        {name: "Race", icon: "🏎️"},
+                        {name: "Jump", icon: "🦘"},
+                        {name: "Puzzle", icon: "🧩"},
+                        {name: "Defend", icon: "🛡️"},
+                        {name: "Attack", icon: "⚔️"},
+                    ];
+                    
+                    for (let i = 0; i < 20; i++) {
+                        const gameNum = 104 + i * 50000;
+                        const template = templates[i % templates.length];
+                        const card = document.createElement('a');
+                        card.href = `game_dynamic.html?n=${gameNum}`;
+                        card.className = 'game-card';
+                        card.innerHTML = `
+                            <div class="game-icon">${template.icon}</div>
+                            <h3>${template.name} Game ${gameNum}</h3>
+                            <p>Game #${gameNum}</p>
+                        `;
+                        preview.appendChild(card);
+                    }
+                }
+                showPreview();
+                </script>
+</div>
         </div>
         
         <div style="text-align: center; margin-top: 40px; padding: 20px; background: rgba(255,255,255,0.1); border-radius: 15px;">
