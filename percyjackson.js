@@ -165,6 +165,7 @@ function initScene() {
     renderer.domElement.addEventListener('mousedown', onMouseDown);
     
     updateUI();
+    updateQuestDisplay();
 }
 
 // Create ground with enhanced graphics
@@ -647,6 +648,11 @@ function updateEnemies() {
             enemies.splice(index, 1);
             playerStats.kills++;
             playerStats.xp += 20;
+            
+            // Update quest progress
+            quests[0].current = playerStats.kills;
+            checkQuests();
+            
             checkLevelUp();
             updateUI();
             
@@ -883,6 +889,46 @@ function checkQuests() {
     });
 }
 
+// Update Quest Display
+function updateQuestDisplay() {
+    const questList = document.getElementById('questList');
+    if (!questList) return;
+    
+    questList.innerHTML = '';
+    
+    quests.forEach(quest => {
+        const questItem = document.createElement('div');
+        questItem.className = `quest-item ${quest.completed ? 'completed' : ''}`;
+        
+        const questName = document.createElement('div');
+        questName.className = 'quest-name';
+        questName.textContent = quest.completed ? '✓ ' + quest.name : quest.name;
+        questItem.appendChild(questName);
+        
+        const questDesc = document.createElement('div');
+        questDesc.className = 'quest-desc';
+        questDesc.textContent = quest.desc;
+        questItem.appendChild(questDesc);
+        
+        const questProgress = document.createElement('div');
+        questProgress.className = 'quest-progress';
+        questProgress.textContent = `Progress: ${Math.min(quest.current, quest.target)}/${quest.target}`;
+        questItem.appendChild(questProgress);
+        
+        const questReward = document.createElement('div');
+        questReward.className = 'quest-reward';
+        const rewardText = [];
+        if (quest.reward.xp) rewardText.push(`${quest.reward.xp} XP`);
+        if (quest.reward.gold) rewardText.push(`${quest.reward.gold} Gold`);
+        if (quest.reward.waterPower) rewardText.push(`+${quest.reward.waterPower} Water Power`);
+        if (quest.reward.attack) rewardText.push(`+${quest.reward.attack} Attack`);
+        questReward.textContent = `Reward: ${rewardText.join(', ')}`;
+        questItem.appendChild(questReward);
+        
+        questList.appendChild(questItem);
+    });
+}
+
 // Update UI
 function updateUI() {
     levelElement.textContent = playerStats.level;
@@ -892,6 +938,9 @@ function updateUI() {
     questsElement.textContent = `${playerStats.questsCompleted}/3`;
     waterPowerElement.textContent = `${Math.floor((playerStats.waterPower / playerStats.maxWaterPower) * 100)}%`;
     riptideElement.textContent = playerStats.riptideCooldown > 0 ? `${Math.ceil(playerStats.riptideCooldown / 60)}s` : 'Yes';
+    
+    // Update quest display
+    updateQuestDisplay();
     
     // Regenerate water power
     if (playerStats.waterPower < playerStats.maxWaterPower) {
@@ -1063,6 +1112,8 @@ function gameOver() {
     document.getElementById('finalQuests').textContent = playerStats.questsCompleted;
     document.getElementById('finalLevel').textContent = playerStats.level;
     gameOverScreen.classList.remove('hidden');
+    const questPanel = document.getElementById('questPanel');
+    if (questPanel) questPanel.classList.add('hidden');
     document.exitPointerLock();
 }
 
