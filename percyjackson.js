@@ -659,7 +659,19 @@ function startGame() {
     if (gameContainer) {
         console.log('✅ Game container found, initializing scene...');
         initScene();
-        animate();
+        // Only start animate after a brief delay to ensure scene is initialized
+        setTimeout(() => {
+            if (scene && camera && renderer) {
+                console.log('✅ Starting animation loop...');
+                animate();
+            } else {
+                console.error('❌ Cannot start animation - missing:', {
+                    scene: !!scene,
+                    camera: !!camera,
+                    renderer: !!renderer
+                });
+            }
+        }, 100);
     } else {
         console.error('❌ Game container not found!');
         alert('Error: Game container not found!');
