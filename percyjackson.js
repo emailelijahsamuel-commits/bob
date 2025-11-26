@@ -284,13 +284,26 @@ function updateInventoryUI() {
         if (item) {
             slot.classList.add('filled');
             slot.textContent = item.icon;
-            slot.title = `${item.name} x${item.quantity}`;
+            slot.title = `${item.name} x${item.quantity}\n${item.type === 'consumable' ? 'Click to use' : 'Click to equip'}`;
             slot.onclick = () => {
                 if (item.type === 'consumable') {
                     useItem(item.id);
+                    showNotification(`Used ${item.name}!`);
                 } else {
                     equipItem(item.id);
+                    showNotification(`Equipped ${item.name}!`);
                 }
+            };
+            slot.oncontextmenu = (e) => {
+                e.preventDefault();
+                // Right click to drop item
+                if (item.quantity > 1) {
+                    item.quantity--;
+                } else {
+                    inventory.splice(i, 1);
+                }
+                updateInventoryUI();
+                showNotification(`Dropped ${item.name}`);
             };
         }
         
@@ -1440,6 +1453,22 @@ function updateEnemies() {
         
         // Remove if dead
         if (enemy.userData.hp <= 0) {
+            // Drop items
+            const dropChance = Math.random();
+            if (dropChance < 0.3) {
+                // 30% chance to drop health potion
+                dropItem(enemy.position, 'healthPotion');
+            } else if (dropChance < 0.5) {
+                // 20% chance to drop mana potion
+                dropItem(enemy.position, 'manaPotion');
+            } else if (dropChance < 0.6 && playerStats.level >= 5) {
+                // 10% chance to drop armor (level 5+)
+                dropItem(enemy.position, 'demigodArmor');
+            } else if (dropChance < 0.65 && playerStats.level >= 10) {
+                // 5% chance to drop trident (level 10+)
+                dropItem(enemy.position, 'trident');
+            }
+            
             scene.remove(enemy);
             enemies.splice(index, 1);
             playerStats.kills++;
@@ -1742,8 +1771,25 @@ function animate() {
         player.position.z -= Math.sin(euler.y) * speed;
     }
     
-    // Keep player on ground
-    player.position.y = 1.5;
+    // Jumping mechanics
+    if (controls.jump && isGrounded && canJump) {
+        jumpVelocity = 0.15;
+        isGrounded = false;
+        canJump = false;
+        playSound('attack');
+    }
+    
+    // Apply gravity and jumping
+    jumpVelocity += gravity;
+    player.position.y += jumpVelocity;
+    
+    // Ground collision
+    if (player.position.y <= 1.5) {
+        player.position.y = 1.5;
+        jumpVelocity = 0;
+        isGrounded = true;
+        canJump = true;
+    }
     
     // Update camera to follow player
     const cameraOffset = new THREE.Vector3(
@@ -1802,9 +1848,81 @@ function animate() {
     
     updateEnemies();
     updateWaterEffects();
+    updateItems();
     updateUI();
     
     renderer.render(scene, camera);
+}
+
+// Drop item on the ground
+function dropItem(position, itemId) {
+    const item = itemDatabase[itemId];
+    if (!item) return;
+    
+    const itemMesh = new THREE.Mesh(
+        new THREE.BoxGeometry(0.3, 0.3, 0.3),
+        new THREE.MeshStandardMaterial({ 
+            color: 0xffffff,
+            emissive: 0xffd700,
+            emissiveIntensity: 0.5
+        })
+    );
+    itemMesh.position.copy(position);
+    itemMesh.position.y = 1;
+    itemMesh.userData = {
+        itemId: itemId,
+        rotationSpeed: 0.05,
+        bobSpeed: 0.02,
+        bobOffset: Math.random() * Math.PI * 2,
+        lifetime: 300 // 5 seconds at 60fps
+    };
+    
+    // Add glow effect
+    const glow = new THREE.Mesh(
+        new THREE.SphereGeometry(0.4, 8, 8),
+        new THREE.MeshBasicMaterial({ 
+            color: 0xffd700,
+            transparent: true,
+            opacity: 0.3
+        })
+    );
+    itemMesh.add(glow);
+    
+    items.push(itemMesh);
+    scene.add(itemMesh);
+}
+
+// Update items on the ground
+function updateItems() {
+    items.forEach((item, index) => {
+        if (!item.userData) return;
+        
+        // Rotate and bob
+        item.rotation.y += item.userData.rotationSpeed;
+        item.position.y = 1 + Math.sin(item.userData.bobOffset + Date.now() * item.userData.bobSpeed) * 0.2;
+        
+        // Check if player picks it up
+        const dx = player.position.x - item.position.x;
+        const dz = player.position.z - item.position.z;
+        const dist = Math.sqrt(dx * dx + dz * dz);
+        
+        if (dist < 1.5) {
+            // Player picked up item
+            addItem(item.userData.itemId, 1);
+            scene.remove(item);
+            items.splice(index, 1);
+            showNotification(`Picked up ${itemDatabase[item.userData.itemId].name}!`);
+            playSound('quest');
+            return;
+        }
+        
+        // Remove after lifetime
+        item.userData.lifetime--;
+        if (item.userData.lifetime <= 0) {
+            scene.remove(item);
+            items.splice(index, 1);
+        }
+    });
 }
 
 function gameOver() {
