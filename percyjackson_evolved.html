@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚡ Percy Jackson: Demigod Quest - Premium Edition</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #2a3f5f 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+        }
+        
+        #gameContainer {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Main Menu Screen */
+        .main-menu {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(10, 14, 39, 0.95) 0%, rgba(26, 31, 58, 0.95) 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            color: #fff;
+        }
+        
+        .main-menu.hidden {
+            display: none;
+        }
+        
+        .game-title {
+            font-size: 4em;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FF6347 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5)); }
+            to { filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.8)); }
+        }
+        
+        .menu-subtitle {
+            font-size: 1.2em;
+            color: #aaa;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        
+        .menu-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 300px;
+        }
+        
+        .menu-btn {
+            padding: 18px 40px;
+            font-size: 1.1em;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .menu-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(102, 126, 0.6);
+        }
+        
+        .menu-btn:active {
+            transform: translateY(-1px);
+        }
+        
+        /* Game Screen */
+        .game-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        
+        .game-screen.hidden {
+            display: none;
+        }
+        
+        /* HUD */
+        .hud {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 100;
+        }
+        
+        .hud > * {
+            pointer-events: auto;
+        }
+        
+        .stats-panel {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(0, 0, 0, 0.85);
+            padding: 20px;
+            border-radius: 15px;
+            color: #fff;
+            min-width: 200px;
+            border: 2px solid rgba(255, 215, 0, 0.5);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+        
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 8px 0;
+            font-size: 0.95em;
+        }
+        
+        .stat-label {
+            color: #FFD700;
+            font-weight: bold;
+        }
+        
+        .stat-value {
+            color: #fff;
+        }
+        
+        .health-bar-container {
+            width: 100%;
+            height: 25px;
+            background: rgba(255, 0, 0, 0.3);
+            border-radius: 12px;
+            margin: 10px 0;
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .health-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #ff0000 0%, #ff6600 50%, #00ff00 100%);
+            transition: width 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            font-weight: bold;
+            font-size: 0.85em;
+        }
+        
+        .xp-bar-container {
+            width: 100%;
+            height: 15px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            margin: 10px 0;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .xp-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #4a90e2 0%, #50c8ff 100%);
+            transition: width 0.3s;
+        }
+        
+        /* Quest Panel */
+        .quest-panel {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 20px;
+            border-radius: 15px;
+            color: #fff;
+            min-width: 280px;
+            max-width: 350px;
+            max-height: 70vh;
+            overflow-y: auto;
+            border: 2px solid #FFD700;
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.5);
+        }
+        
+        .quest-panel h3 {
+            color: #FFD700;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            text-align: center;
+            border-bottom: 2px solid #FFD700;
+            padding-bottom: 10px;
+        }
+        
+        .quest-item {
+            margin: 15px 0;
+            padding: 12px;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 8px;
+            border-left: 4px solid #FFD700;
+            transition: all 0.3s;
+        }
+        
+        .quest-item:hover {
+            background: rgba(255, 215, 0, 0.2);
+            transform: translateX(5px);
+        }
+        
+        .quest-item.completed {
+            opacity: 0.7;
+            border-left-color: #00ff00;
+            background: rgba(0, 255, 0, 0.1);
+        }
+        
+        .quest-name {
+            font-weight: bold;
+            color: #FFD700;
+            margin-bottom: 5px;
+            font-size: 1.05em;
+        }
+        
+        .quest-desc {
+            font-size: 0.9em;
+            color: #ccc;
+            margin-bottom: 8px;
+        }
+        
+        .quest-progress {
+            font-size: 0.85em;
+            color: #00ff00;
+            margin-bottom: 5px;
+        }
+        
+        .quest-reward {
+            font-size: 0.8em;
+            color: #ffaa00;
+        }
+        
+        /* Inventory Panel */
+        .inventory-panel {
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 15px;
+            border-radius: 15px;
+            color: #fff;
+            border: 2px solid rgba(102, 126, 234, 0.5);
+            display: none;
+        }
+        
+        .inventory-panel.visible {
+            display: block;
+        }
+        
+        .inventory-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 50px);
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .inventory-slot {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .inventory-slot:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+        
+        .inventory-slot.filled {
+            border-color: #FFD700;
+            background: rgba(255, 215, 0, 0.2);
+        }
+        
+        /* Settings Panel */
+        .settings-panel {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            color: #fff;
+            min-width: 400px;
+            border: 3px solid #FFD700;
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.5);
+            z-index: 200;
+            display: none;
+        }
+        
+        .settings-panel.visible {
+            display: block;
+        }
+        
+        .settings-panel h2 {
+            color: #FFD700;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .setting-item {
+            margin: 15px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .setting-label {
+            color: #fff;
+            font-size: 1em;
+        }
+        
+        .setting-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .slider {
+            width: 150px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            outline: none;
+        }
+        
+        .toggle-btn {
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        /* Controls Panel */
+        .controls-panel {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.85);
+            padding: 15px;
+            border-radius: 15px;
+            color: #fff;
+            font-size: 0.85em;
+            border: 2px solid rgba(102, 126, 234, 0.5);
+        }
+        
+        .control-item {
+            margin: 5px 0;
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        
+        .control-key {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            color: #FFD700;
+        }
+        
+        /* Pause Menu */
+        .pause-menu {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            color: #fff;
+            text-align: center;
+            z-index: 200;
+            border: 3px solid #FFD700;
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.5);
+            display: none;
+        }
+        
+        .pause-menu.visible {
+            display: block;
+        }
+        
+        .pause-menu h2 {
+            color: #FFD700;
+            font-size: 2em;
+            margin-bottom: 30px;
+        }
+        
+        .pause-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 250px;
+            margin: 0 auto;
+        }
+        
+        /* Notification System */
+        .notification {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            padding: 20px 40px;
+            border-radius: 15px;
+            color: #fff;
+            font-size: 1.2em;
+            border: 3px solid #FFD700;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+            z-index: 300;
+            display: none;
+            animation: notificationPop 0.5s;
+        }
+        
+        .notification.visible {
+            display: block;
+        }
+        
+        @keyframes notificationPop {
+            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+        
+        /* Back Button */
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            border: 2px solid #fff;
+            border-radius: 10px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 1em;
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+        
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+        
+        /* Minimap */
+        .minimap {
+            position: absolute;
+            bottom: 15px;
+            right: 200px;
+            width: 150px;
+            height: 150px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid rgba(255, 215, 0, 0.5);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .minimap canvas {
+            width: 100%;
+            height: 100%;
+        }
+        
+        /* Loading Screen */
+        .loading-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            color: #fff;
+        }
+        
+        .loading-screen.hidden {
+            display: none;
+        }
+        
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 5px solid rgba(255, 215, 0, 0.3);
+            border-top-color: #FFD700;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .loading-text {
+            font-size: 1.2em;
+            color: #FFD700;
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-btn">← Back to Menu</a>
+    
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Loading Demigod Quest...</div>
+    </div>
+    
+    <!-- Main Menu -->
+    <div id="mainMenu" class="main-menu">
+        <h1 class="game-title">⚡ Percy Jackson</h1>
+        <p class="menu-subtitle">Demigod Quest - Premium Edition</p>
+        <div class="menu-buttons">
+            <button id="newGameBtn" class="menu-btn">🎮 New Game</button>
+            <button id="continueBtn" class="menu-btn">▶️ Continue</button>
+            <button id="settingsBtn" class="menu-btn">⚙️ Settings</button>
+            <button id="tutorialBtn" class="menu-btn">📖 Tutorial</button>
+        </div>
+    </div>
+    
+    <!-- Game Screen -->
+    <div id="gameScreen" class="game-screen hidden">
+        <div id="gameContainer"></div>
+        
+        <!-- HUD -->
+        <div class="hud">
+            <!-- Stats Panel -->
+            <div class="stats-panel">
+                <div class="stat-row">
+                    <span class="stat-label">Level:</span>
+                    <span class="stat-value" id="level">1</span>
+                </div>
+                <div class="health-bar-container">
+                    <div class="health-bar" id="healthBar" style="width: 100%">100/100</div>
+                </div>
+                <div class="xp-bar-container">
+                    <div class="xp-bar" id="xpBar" style="width: 0%"></div>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">XP:</span>
+                    <span class="stat-value" id="xp">0/100</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Gold:</span>
+                    <span class="stat-value" id="gold">0</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Kills:</span>
+                    <span class="stat-value" id="kills">0</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Water Power:</span>
+                    <span class="stat-value" id="waterPower">100%</span>
+                </div>
+            </div>
+            
+            <!-- Quest Panel -->
+            <div class="quest-panel" id="questPanel">
+                <h3>⚔️ Active Quests</h3>
+                <div id="questList"></div>
+            </div>
+            
+            <!-- Inventory Panel -->
+            <div class="inventory-panel" id="inventoryPanel">
+                <h3 style="color: #FFD700; margin-bottom: 10px;">🎒 Inventory</h3>
+                <div class="inventory-grid" id="inventoryGrid"></div>
+            </div>
+            
+            <!-- Controls Panel -->
+            <div class="controls-panel">
+                <div class="control-item">
+                    <span>Move:</span>
+                    <span class="control-key">WASD</span>
+                </div>
+                <div class="control-item">
+                    <span>Look:</span>
+                    <span class="control-key">Mouse</span>
+                </div>
+                <div class="control-item">
+                    <span>Attack:</span>
+                    <span class="control-key">Left Click</span>
+                </div>
+                <div class="control-item">
+                    <span>Water Power:</span>
+                    <span class="control-key">Right Click</span>
+                </div>
+                <div class="control-item">
+                    <span>Inventory:</span>
+                    <span class="control-key">E</span>
+                </div>
+                <div class="control-item">
+                    <span>Pause:</span>
+                    <span class="control-key">ESC</span>
+                </div>
+            </div>
+            
+            <!-- Minimap -->
+            <div class="minimap">
+                <canvas id="minimapCanvas"></canvas>
+            </div>
+        </div>
+        
+        <!-- Pause Menu -->
+        <div class="pause-menu" id="pauseMenu">
+            <h2>⏸️ Paused</h2>
+            <div class="pause-buttons">
+                <button class="menu-btn" id="resumeBtn">▶️ Resume</button>
+                <button class="menu-btn" id="pauseSettingsBtn">⚙️ Settings</button>
+                <button class="menu-btn" id="saveBtn">💾 Save Game</button>
+                <button class="menu-btn" id="quitBtn">🚪 Quit to Menu</button>
+            </div>
+        </div>
+        
+        <!-- Settings Panel -->
+        <div class="settings-panel" id="settingsPanel">
+            <h2>⚙️ Settings</h2>
+            <div class="setting-item">
+                <span class="setting-label">Master Volume</span>
+                <div class="setting-control">
+                    <input type="range" class="slider" id="masterVolume" min="0" max="100" value="50">
+                    <span id="masterVolumeValue">50%</span>
+                </div>
+            </div>
+            <div class="setting-item">
+                <span class="setting-label">Music Volume</span>
+                <div class="setting-control">
+                    <input type="range" class="slider" id="musicVolume" min="0" max="100" value="50">
+                    <span id="musicVolumeValue">50%</span>
+                </div>
+            </div>
+            <div class="setting-item">
+                <span class="setting-label">SFX Volume</span>
+                <div class="setting-control">
+                    <input type="range" class="slider" id="sfxVolume" min="0" max="100" value="50">
+                    <span id="sfxVolumeValue">50%</span>
+                </div>
+            </div>
+            <div class="setting-item">
+                <span class="setting-label">Graphics Quality</span>
+                <div class="setting-control">
+                    <select id="graphicsQuality" class="toggle-btn">
+                        <option value="low">Low</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="high">High</option>
+                        <option value="ultra">Ultra</option>
+                    </select>
+                </div>
+            </div>
+            <div class="setting-item">
+                <span class="setting-label">Shadows</span>
+                <button class="toggle-btn" id="shadowsToggle">ON</button>
+            </div>
+            <div class="setting-item">
+                <span class="setting-label">VSync</span>
+                <button class="toggle-btn" id="vsyncToggle">ON</button>
+            </div>
+            <div style="margin-top: 20px; text-align: center;">
+                <button class="menu-btn" id="closeSettingsBtn">Close</button>
+            </div>
+        </div>
+        
+        <!-- Notification -->
+        <div class="notification" id="notification"></div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="percyjackson_evolved.js"></script>
+</body>
+</html>
+
