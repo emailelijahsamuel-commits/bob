@@ -150,6 +150,7 @@ function initAudio() {
         masterGainNode.gain.value = settings.masterVolume / 100;
     } catch (e) {
         console.warn('Web Audio API not supported:', e);
+        // Continue without audio
     }
 }
 
@@ -380,35 +381,48 @@ let currentArea = 1;
 let directionalLight;
 
 // ==================== UI ELEMENTS ====================
-const elements = {
-    mainMenu: document.getElementById('mainMenu'),
-    gameScreen: document.getElementById('gameScreen'),
-    loadingScreen: document.getElementById('loadingScreen'),
-    pauseMenu: document.getElementById('pauseMenu'),
-    settingsPanel: document.getElementById('settingsPanel'),
-    inventoryPanel: document.getElementById('inventoryPanel'),
-    questPanel: document.getElementById('questPanel'),
-    notification: document.getElementById('notification')
-};
+let elements = {};
 
 // ==================== INITIALIZATION ====================
 function init() {
-    loadSettings();
-    initAudio();
-    setupEventListeners();
-    
-    // Hide loading screen after a moment
-    setTimeout(() => {
-        if (elements.loadingScreen) {
-            elements.loadingScreen.classList.add('hidden');
-        }
-    }, 1000);
-    
-    // Check for save file
-    const hasSave = loadGame();
-    if (hasSave && elements.mainMenu) {
+    try {
+        // Initialize elements after DOM is ready
+        elements = {
+            mainMenu: document.getElementById('mainMenu'),
+            gameScreen: document.getElementById('gameScreen'),
+            loadingScreen: document.getElementById('loadingScreen'),
+            pauseMenu: document.getElementById('pauseMenu'),
+            settingsPanel: document.getElementById('settingsPanel'),
+            inventoryPanel: document.getElementById('inventoryPanel'),
+            questPanel: document.getElementById('questPanel'),
+            notification: document.getElementById('notification')
+        };
+        
+        loadSettings();
+        initAudio();
+        setupEventListeners();
+        
+        // Hide loading screen after a moment
+        setTimeout(() => {
+            const loadingScreen = elements.loadingScreen || document.getElementById('loadingScreen');
+            if (loadingScreen) {
+                loadingScreen.classList.add('hidden');
+            }
+        }, 500);
+        
+        // Check for save file
+        const hasSave = loadGame();
         const continueBtn = document.getElementById('continueBtn');
-        if (continueBtn) continueBtn.style.display = 'block';
+        if (continueBtn) {
+            continueBtn.style.display = hasSave ? 'block' : 'none';
+        }
+    } catch (error) {
+        console.error('Error initializing game:', error);
+        // Hide loading screen even on error
+        const loadingScreen = document.getElementById('loadingScreen');
+        if (loadingScreen) {
+            loadingScreen.classList.add('hidden');
+        }
     }
 }
 
