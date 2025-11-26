@@ -88,6 +88,26 @@ body {
     min-height: 40px;
 }
 
+.game-section {
+    margin: 40px 0;
+    padding: 20px 0;
+    border-bottom: 2px solid rgba(102, 126, 234, 0.2);
+}
+
+.game-section:last-child {
+    border-bottom: none;
+}
+
+.section-title {
+    color: #667eea;
+    font-size: 2em;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #667eea;
+    text-align: center;
+    font-weight: bold;
+}
+
 .game-select-btn {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
