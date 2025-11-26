@@ -691,6 +691,7 @@ function initScene() {
     
     // Scene
     scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x87CEEB); // Sky blue background as fallback
     
     // Sky
     const skyGeometry = new THREE.SphereGeometry(500, 32, 32);
@@ -1753,9 +1754,16 @@ function onWindowResize() {
 
 // ==================== GAME LOOP ====================
 function animate() {
-    if (gameState !== 'playing') return;
-    
     requestAnimationFrame(animate);
+    
+    if (gameState !== 'playing') {
+        // Still render the scene even when paused/menu to avoid black screen
+        if (scene && camera && renderer) {
+            renderer.render(scene, camera);
+        }
+        return;
+    }
+    
     const delta = clock.getDelta();
     
     // Update player movement
@@ -1858,7 +1866,10 @@ function animate() {
     updateItems();
     updateUI();
     
-    renderer.render(scene, camera);
+    // Always render, even if something goes wrong
+    if (scene && camera && renderer) {
+        renderer.render(scene, camera);
+    }
 }
 
 // Drop item on the ground
