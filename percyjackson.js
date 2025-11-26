@@ -713,12 +713,22 @@ function initScene() {
     
     // Scene
     scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x87CEEB); // Sky blue background as fallback
-    console.log('✅ Scene created with background color');
+    // Set a solid background color first (this should definitely show)
+    scene.background = new THREE.Color(0x87CEEB); // Sky blue background
+    console.log('✅ Scene created with background color:', scene.background);
+    
+    // Add a simple test cube to verify rendering works
+    const testGeometry = new THREE.BoxGeometry(2, 2, 2);
+    const testMaterial = new THREE.MeshStandardMaterial({ color: 0xff0000 });
+    const testCube = new THREE.Mesh(testGeometry, testMaterial);
+    testCube.position.set(0, 2, 0);
+    scene.add(testCube);
+    console.log('✅ Added test red cube at origin');
     
     // Sky
-    const skyGeometry = new THREE.SphereGeometry(500, 32, 32);
-    const skyMaterial = new THREE.ShaderMaterial({
+    try {
+        const skyGeometry = new THREE.SphereGeometry(500, 32, 32);
+        const skyMaterial = new THREE.ShaderMaterial({
         vertexShader: `
             varying vec3 vWorldPosition;
             void main() {
