@@ -555,8 +555,19 @@
         <div class="loading-text">Loading Demigod Quest...</div>
     </div>
     
+    <!-- Password Screen -->
+    <div id="passwordScreen" class="main-menu">
+        <h1 class="game-title">⚡ Percy Jackson</h1>
+        <p class="menu-subtitle">Demigod Quest - Premium Edition</p>
+        <div style="margin: 30px 0; text-align: center;">
+            <input type="password" id="passwordInput" placeholder="Enter Password" style="padding: 15px 20px; font-size: 1.1em; border-radius: 10px; border: 2px solid #FFD700; background: rgba(0,0,0,0.5); color: #fff; width: 250px; text-align: center;" autofocus>
+            <div id="passwordError" style="color: #ff0000; margin-top: 10px; font-size: 0.9em; display: none;">❌ Incorrect Password</div>
+        </div>
+        <button id="passwordSubmitBtn" class="menu-btn">🔓 Unlock Game</button>
+    </div>
+    
     <!-- Main Menu -->
-    <div id="mainMenu" class="main-menu">
+    <div id="mainMenu" class="main-menu hidden">
         <h1 class="game-title">⚡ Percy Jackson</h1>
         <p class="menu-subtitle">Demigod Quest - Premium Edition</p>
         <div class="menu-buttons">

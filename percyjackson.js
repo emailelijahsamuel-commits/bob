@@ -383,6 +383,40 @@ let directionalLight;
 // ==================== UI ELEMENTS ====================
 let elements = {};
 
+// ==================== PASSWORD PROTECTION ====================
+const GAME_PASSWORD = 'demigod2024'; // Change this to your desired password
+
+function checkPassword() {
+    const passwordInput = document.getElementById('passwordInput');
+    const passwordError = document.getElementById('passwordError');
+    const passwordScreen = document.getElementById('passwordScreen');
+    const mainMenu = document.getElementById('mainMenu');
+    
+    if (!passwordInput) return;
+    
+    const enteredPassword = passwordInput.value;
+    
+    if (enteredPassword === GAME_PASSWORD) {
+        // Correct password - show main menu
+        if (passwordScreen) passwordScreen.classList.add('hidden');
+        if (mainMenu) mainMenu.classList.remove('hidden');
+        if (passwordError) passwordError.style.display = 'none';
+        
+        // Store session
+        sessionStorage.setItem('percyjackson_unlocked', 'true');
+    } else {
+        // Wrong password
+        if (passwordError) {
+            passwordError.style.display = 'block';
+            passwordError.textContent = '❌ Incorrect Password';
+        }
+        if (passwordInput) {
+            passwordInput.value = '';
+            passwordInput.focus();
+        }
+    }
+}
+
 // ==================== INITIALIZATION ====================
 function init() {
     try {
@@ -397,6 +431,39 @@ function init() {
             questPanel: document.getElementById('questPanel'),
             notification: document.getElementById('notification')
         };
+        
+        // Check if already unlocked in this session
+        const isUnlocked = sessionStorage.getItem('percyjackson_unlocked') === 'true';
+        
+        if (!isUnlocked) {
+            // Show password screen
+            const passwordScreen = document.getElementById('passwordScreen');
+            const mainMenu = document.getElementById('mainMenu');
+            if (passwordScreen) passwordScreen.classList.remove('hidden');
+            if (mainMenu) mainMenu.classList.add('hidden');
+            
+            // Setup password input
+            const passwordInput = document.getElementById('passwordInput');
+            const passwordSubmitBtn = document.getElementById('passwordSubmitBtn');
+            
+            if (passwordInput) {
+                passwordInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        checkPassword();
+                    }
+                });
+            }
+            
+            if (passwordSubmitBtn) {
+                passwordSubmitBtn.addEventListener('click', checkPassword);
+            }
+        } else {
+            // Already unlocked - show main menu
+            const passwordScreen = document.getElementById('passwordScreen');
+            const mainMenu = document.getElementById('mainMenu');
+            if (passwordScreen) passwordScreen.classList.add('hidden');
+            if (mainMenu) mainMenu.classList.remove('hidden');
+        }
         
         loadSettings();
         initAudio();
