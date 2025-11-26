@@ -431,8 +431,19 @@ function checkPassword() {
 }
 
 // ==================== INITIALIZATION ====================
+// Prevent multiple initializations
+let isInitialized = false;
+
 function init() {
+    if (isInitialized) {
+        console.warn('⚠️ Init already called, skipping...');
+        return;
+    }
+    
     try {
+        console.log('🚀 Starting initialization...');
+        isInitialized = true;
+        
         // Initialize elements after DOM is ready
         elements = {
             mainMenu: document.getElementById('mainMenu'),
@@ -445,11 +456,16 @@ function init() {
             notification: document.getElementById('notification')
         };
         
+        console.log('✅ Elements initialized');
+        
         // Hide loading screen FIRST before showing anything else
         const loadingScreen = elements.loadingScreen || document.getElementById('loadingScreen');
         if (loadingScreen) {
+            loadingScreen.style.display = 'none';
             loadingScreen.classList.add('hidden');
             console.log('✅ Loading screen hidden');
+        } else {
+            console.error('❌ Loading screen element not found!');
         }
         
         // Check if already unlocked in this session
@@ -504,12 +520,19 @@ function init() {
             continueBtn.style.display = hasSave ? 'block' : 'none';
         }
     } catch (error) {
-        console.error('Error initializing game:', error);
+        console.error('❌ Error initializing game:', error);
+        console.error('Stack:', error.stack);
+        isInitialized = false; // Allow retry on error
+        
         // Hide loading screen even on error
         const loadingScreen = document.getElementById('loadingScreen');
         if (loadingScreen) {
+            loadingScreen.style.display = 'none';
             loadingScreen.classList.add('hidden');
         }
+        
+        // Show error message
+        alert('Error loading game. Check console for details. Error: ' + error.message);
     }
 }
 
