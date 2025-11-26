@@ -445,6 +445,13 @@ function init() {
             notification: document.getElementById('notification')
         };
         
+        // Hide loading screen FIRST before showing anything else
+        const loadingScreen = elements.loadingScreen || document.getElementById('loadingScreen');
+        if (loadingScreen) {
+            loadingScreen.classList.add('hidden');
+            console.log('✅ Loading screen hidden');
+        }
+        
         // Check if already unlocked in this session
         const isUnlocked = sessionStorage.getItem('percyjackson_unlocked') === 'true';
         
@@ -452,7 +459,10 @@ function init() {
             // Show password screen
             const passwordScreen = document.getElementById('passwordScreen');
             const mainMenu = document.getElementById('mainMenu');
-            if (passwordScreen) passwordScreen.classList.remove('hidden');
+            if (passwordScreen) {
+                passwordScreen.classList.remove('hidden');
+                console.log('✅ Password screen shown');
+            }
             if (mainMenu) mainMenu.classList.add('hidden');
             
             // Setup password input
@@ -465,6 +475,8 @@ function init() {
                         checkPassword();
                     }
                 });
+                // Focus the input
+                setTimeout(() => passwordInput.focus(), 100);
             }
             
             if (passwordSubmitBtn) {
@@ -475,20 +487,15 @@ function init() {
             const passwordScreen = document.getElementById('passwordScreen');
             const mainMenu = document.getElementById('mainMenu');
             if (passwordScreen) passwordScreen.classList.add('hidden');
-            if (mainMenu) mainMenu.classList.remove('hidden');
+            if (mainMenu) {
+                mainMenu.classList.remove('hidden');
+                console.log('✅ Main menu shown');
+            }
         }
         
         loadSettings();
         initAudio();
         setupEventListeners();
-        
-        // Hide loading screen after a moment
-        setTimeout(() => {
-            const loadingScreen = elements.loadingScreen || document.getElementById('loadingScreen');
-            if (loadingScreen) {
-                loadingScreen.classList.add('hidden');
-            }
-        }, 500);
         
         // Check for save file
         const hasSave = loadGame();
