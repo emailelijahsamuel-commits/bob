@@ -1102,6 +1102,8 @@ function onWindowResize() {
 function startGame() {
     gameState = 'playing';
     startScreen.classList.add('hidden');
+    const questPanel = document.getElementById('questPanel');
+    if (questPanel) questPanel.classList.remove('hidden');
     renderer.domElement.requestPointerLock();
     animate();
 }
@@ -1153,6 +1155,8 @@ function resetGame() {
     createEnemies();
     
     gameOverScreen.classList.add('hidden');
+    updateUI();
+    updateQuestDisplay();
     startGame();
 }
 
