@@ -1821,12 +1821,26 @@ function animate() {
     
     // ALWAYS render if scene exists, regardless of game state
     if (scene && camera && renderer) {
-        renderer.render(scene, camera);
+        try {
+            renderer.render(scene, camera);
+        } catch (renderError) {
+            console.error('❌ Render error:', renderError);
+        }
     } else {
-        // Debug: log what's missing
-        if (!scene) console.warn('⚠️ Scene missing in animate loop');
-        if (!camera) console.warn('⚠️ Camera missing in animate loop');
-        if (!renderer) console.warn('⚠️ Renderer missing in animate loop');
+        // Debug: log what's missing (only once to avoid spam)
+        if (!scene && !window._sceneWarningShown) {
+            console.error('❌ Scene is missing!', scene);
+            window._sceneWarningShown = true;
+        }
+        if (!camera && !window._cameraWarningShown) {
+            console.error('❌ Camera is missing!', camera);
+            window._cameraWarningShown = true;
+        }
+        if (!renderer && !window._rendererWarningShown) {
+            console.error('❌ Renderer is missing!', renderer);
+            window._rendererWarningShown = true;
+        }
+        return; // Don't continue if we can't render
     }
     
     if (gameState !== 'playing') {
