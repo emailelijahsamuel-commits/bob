@@ -752,10 +752,11 @@ function initScene() {
     scene.fog = new THREE.FogExp2(0x87CEEB, 0.002);
     
     // Camera
-    const aspect = container.clientWidth / container.clientHeight;
+    const aspect = container.clientWidth / container.clientHeight || 16/9;
     camera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000);
     camera.position.set(0, 5, 10);
     camera.lookAt(0, 0, 0);
+    camera.updateProjectionMatrix();
     console.log('✅ Camera created. Position:', camera.position, 'Aspect:', aspect);
     camera.lookAt(0, 0, 0);
     console.log('Camera created at position:', camera.position);
@@ -1808,11 +1809,17 @@ function onWindowResize() {
 function animate() {
     requestAnimationFrame(animate);
     
+    // ALWAYS render if scene exists, regardless of game state
+    if (scene && camera && renderer) {
+        renderer.render(scene, camera);
+    } else {
+        // Debug: log what's missing
+        if (!scene) console.warn('⚠️ Scene missing in animate loop');
+        if (!camera) console.warn('⚠️ Camera missing in animate loop');
+        if (!renderer) console.warn('⚠️ Renderer missing in animate loop');
+    }
+    
     if (gameState !== 'playing') {
-        // Still render the scene even when paused/menu to avoid black screen
-        if (scene && camera && renderer) {
-            renderer.render(scene, camera);
-        }
         return;
     }
     
