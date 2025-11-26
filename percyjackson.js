@@ -1834,22 +1834,28 @@ function animate() {
     // ALWAYS render if scene exists, regardless of game state
     if (scene && camera && renderer) {
         try {
+            // Make sure camera is updated
+            camera.updateProjectionMatrix();
             renderer.render(scene, camera);
         } catch (renderError) {
-            console.error('❌ Render error:', renderError);
+            if (!window._renderErrorShown) {
+                console.error('❌ Render error:', renderError);
+                console.error('Stack:', renderError.stack);
+                window._renderErrorShown = true;
+            }
         }
     } else {
         // Debug: log what's missing (only once to avoid spam)
         if (!scene && !window._sceneWarningShown) {
-            console.error('❌ Scene is missing!', scene);
+            console.error('❌ Scene is missing in animate loop!', scene);
             window._sceneWarningShown = true;
         }
         if (!camera && !window._cameraWarningShown) {
-            console.error('❌ Camera is missing!', camera);
+            console.error('❌ Camera is missing in animate loop!', camera);
             window._cameraWarningShown = true;
         }
         if (!renderer && !window._rendererWarningShown) {
-            console.error('❌ Renderer is missing!', renderer);
+            console.error('❌ Renderer is missing in animate loop!', renderer);
             window._rendererWarningShown = true;
         }
         return; // Don't continue if we can't render
