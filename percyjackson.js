@@ -642,14 +642,28 @@ function continueGame() {
 }
 
 function startGame() {
+    console.log('🎮 Starting game...');
     gameState = 'playing';
     playTimeStart = Date.now();
     
     if (elements.mainMenu) elements.mainMenu.classList.add('hidden');
-    if (elements.gameScreen) elements.gameScreen.classList.remove('hidden');
+    const gameScreen = document.getElementById('gameScreen');
+    if (gameScreen) {
+        gameScreen.classList.remove('hidden');
+        console.log('✅ Game screen shown');
+    } else {
+        console.error('❌ Game screen not found!');
+    }
     
-    initScene();
-    animate();
+    const gameContainer = document.getElementById('gameContainer');
+    if (gameContainer) {
+        console.log('✅ Game container found, initializing scene...');
+        initScene();
+        animate();
+    } else {
+        console.error('❌ Game container not found!');
+        alert('Error: Game container not found!');
+    }
 }
 
 function pauseGame() {
