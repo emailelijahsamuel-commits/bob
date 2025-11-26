@@ -384,7 +384,7 @@ let directionalLight;
 let elements = {};
 
 // ==================== PASSWORD PROTECTION ====================
-const GAME_PASSWORD = 'demigod2024'; // Change this to your desired password
+const GAME_PASSWORD = 'banana 123'; // Change this to your desired password
 
 function checkPassword() {
     const passwordInput = document.getElementById('passwordInput');
