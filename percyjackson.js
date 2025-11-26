@@ -1453,20 +1453,21 @@ function updateEnemies() {
         
         // Remove if dead
         if (enemy.userData.hp <= 0) {
-            // Drop items
+            // Drop items before removing enemy (clone position to avoid reference issues)
             const dropChance = Math.random();
+            const dropPosition = enemy.position.clone();
             if (dropChance < 0.3) {
                 // 30% chance to drop health potion
-                dropItem(enemy.position, 'healthPotion');
+                dropItem(dropPosition, 'healthPotion');
             } else if (dropChance < 0.5) {
                 // 20% chance to drop mana potion
-                dropItem(enemy.position, 'manaPotion');
+                dropItem(dropPosition, 'manaPotion');
             } else if (dropChance < 0.6 && playerStats.level >= 5) {
                 // 10% chance to drop armor (level 5+)
-                dropItem(enemy.position, 'demigodArmor');
+                dropItem(dropPosition, 'demigodArmor');
             } else if (dropChance < 0.65 && playerStats.level >= 10) {
                 // 5% chance to drop trident (level 10+)
-                dropItem(enemy.position, 'trident');
+                dropItem(dropPosition, 'trident');
             }
             
             scene.remove(enemy);
@@ -1692,7 +1693,12 @@ function onKeyDown(event) {
         case 's': controls.moveBackward = true; break;
         case 'a': controls.moveLeft = true; break;
         case 'd': controls.moveRight = true; break;
-        case ' ': controls.jump = true; break;
+        case ' ': 
+            controls.jump = true;
+            if (isGrounded && canJump) {
+                jumpRequested = true;
+            }
+            break;
     }
 }
 
@@ -1772,10 +1778,11 @@ function animate() {
     }
     
     // Jumping mechanics
-    if (controls.jump && isGrounded && canJump) {
+    if (jumpRequested && isGrounded && canJump) {
         jumpVelocity = 0.15;
         isGrounded = false;
         canJump = false;
+        jumpRequested = false;
         playSound('attack');
     }
     
@@ -1894,12 +1901,18 @@ function dropItem(position, itemId) {
 
 // Update items on the ground
 function updateItems() {
-    items.forEach((item, index) => {
-        if (!item.userData) return;
+    // Iterate backwards to safely remove items
+    for (let i = items.length - 1; i >= 0; i--) {
+        const item = items[i];
+        if (!item || !item.userData) {
+            items.splice(i, 1);
+            continue;
+        }
         
         // Rotate and bob
         item.rotation.y += item.userData.rotationSpeed;
-        item.position.y = 1 + Math.sin(item.userData.bobOffset + Date.now() * item.userData.bobSpeed) * 0.2;
+        const bobTime = clock.getElapsedTime() * item.userData.bobSpeed;
+        item.position.y = 1 + Math.sin(item.userData.bobOffset + bobTime) * 0.2;
         
         // Check if player picks it up
         const dx = player.position.x - item.position.x;
@@ -1908,21 +1921,24 @@ function updateItems() {
         
         if (dist < 1.5) {
             // Player picked up item
-            addItem(item.userData.itemId, 1);
+            const itemData = itemDatabase[item.userData.itemId];
+            if (itemData) {
+                addItem(item.userData.itemId, 1);
+                showNotification(`Picked up ${itemData.name}!`);
+                playSound('quest');
+            }
             scene.remove(item);
-            items.splice(index, 1);
-            showNotification(`Picked up ${itemDatabase[item.userData.itemId].name}!`);
-            playSound('quest');
-            return;
+            items.splice(i, 1);
+            continue;
         }
         
         // Remove after lifetime
         item.userData.lifetime--;
         if (item.userData.lifetime <= 0) {
             scene.remove(item);
-            items.splice(index, 1);
+            items.splice(i, 1);
         }
-    });
+    }
 }
 
 function gameOver() {
