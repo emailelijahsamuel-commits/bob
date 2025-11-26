@@ -687,11 +687,20 @@ function quitToMenu() {
 // ==================== SCENE INITIALIZATION ====================
 function initScene() {
     const container = document.getElementById('gameContainer');
-    if (!container) return;
+    if (!container) {
+        console.error('❌ Game container not found!');
+        alert('Error: Game container not found. Check console for details.');
+        return;
+    }
+    
+    console.log('✅ Container found:', container);
+    console.log('Container size:', container.clientWidth, 'x', container.clientHeight);
+    console.log('Container visible:', container.offsetParent !== null);
     
     // Scene
     scene = new THREE.Scene();
     scene.background = new THREE.Color(0x87CEEB); // Sky blue background as fallback
+    console.log('✅ Scene created with background color');
     
     // Sky
     const skyGeometry = new THREE.SphereGeometry(500, 32, 32);
@@ -729,8 +738,13 @@ function initScene() {
     scene.fog = new THREE.FogExp2(0x87CEEB, 0.002);
     
     // Camera
-    camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+    const aspect = container.clientWidth / container.clientHeight;
+    camera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000);
     camera.position.set(0, 5, 10);
+    camera.lookAt(0, 0, 0);
+    console.log('✅ Camera created. Position:', camera.position, 'Aspect:', aspect);
+    camera.lookAt(0, 0, 0);
+    console.log('Camera created at position:', camera.position);
     
     // Renderer
     const qualitySettings = {
@@ -752,6 +766,11 @@ function initScene() {
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.2;
     container.appendChild(renderer.domElement);
+    console.log('✅ Renderer created and canvas appended');
+    console.log('Canvas size:', renderer.domElement.width, 'x', renderer.domElement.height);
+    console.log('Canvas style:', window.getComputedStyle(renderer.domElement).display);
+    console.log('Renderer created and appended. Size:', container.clientWidth, 'x', container.clientHeight);
+    console.log('Canvas element:', renderer.domElement);
     
     // Lighting
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
@@ -784,26 +803,45 @@ function initScene() {
     scene.add(rimLight);
     
     // Create world
-    createGround();
-    createPlayer();
-    createEnemies();
-    createStructures();
-    createWater();
-    
-    // Event listeners
-    window.addEventListener('resize', onWindowResize);
-    document.addEventListener('mousemove', onMouseMove);
-    renderer.domElement.addEventListener('click', () => {
-        renderer.domElement.requestPointerLock();
-    });
-    document.addEventListener('pointerlockchange', onPointerLockChange);
-    renderer.domElement.addEventListener('mousedown', onMouseDown);
-    renderer.domElement.addEventListener('contextmenu', (e) => e.preventDefault());
-    
-    applyEquipmentStats();
-    updateUI();
-    updateQuestDisplay();
-    updateInventoryUI();
+    try {
+        console.log('Creating game world...');
+        createGround();
+        console.log('✅ Ground created');
+        createPlayer();
+        console.log('✅ Player created:', player ? 'yes' : 'NO!');
+        createEnemies();
+        console.log('✅ Enemies created:', enemies.length);
+        createStructures();
+        console.log('✅ Structures created');
+        createWater();
+        console.log('✅ Water created');
+        
+        console.log('Total objects in scene:', scene.children.length);
+        
+        // Event listeners
+        window.addEventListener('resize', onWindowResize);
+        document.addEventListener('mousemove', onMouseMove);
+        renderer.domElement.addEventListener('click', () => {
+            renderer.domElement.requestPointerLock();
+        });
+        document.addEventListener('pointerlockchange', onPointerLockChange);
+        renderer.domElement.addEventListener('mousedown', onMouseDown);
+        renderer.domElement.addEventListener('contextmenu', (e) => e.preventDefault());
+        
+        applyEquipmentStats();
+        updateUI();
+        updateQuestDisplay();
+        updateInventoryUI();
+        
+        // Force immediate render
+        renderer.render(scene, camera);
+        console.log('✅ Initial render complete!');
+    } catch (error) {
+        console.error('❌ Error creating world:', error);
+        console.error(error.stack);
+        // Still try to render
+        renderer.render(scene, camera);
+    }
 }
 
 // ==================== HELPER FUNCTIONS ====================
